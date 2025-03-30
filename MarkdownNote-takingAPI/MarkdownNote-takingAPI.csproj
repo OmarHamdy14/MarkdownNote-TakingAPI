@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>MarkdownNote_takingAPI</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\Base\Implementation\" />
+    <Folder Include="Data\Base\Interfaces\" />
+    <Folder Include="Data\DTOs\" />
+    <Folder Include="Data\Services\Implementation\" />
+    <Folder Include="Data\Services\Interfaces\" />
+  </ItemGroup>
+
+</Project>
