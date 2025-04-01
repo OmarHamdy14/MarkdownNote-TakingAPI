@@ -1,6 +1,6 @@
 ﻿namespace MarkdownNote_takingAPI.Models
 {
-    public class ApplicationUser
+    public class ApplicationUser : IdentityUser
     {
     }
 }
