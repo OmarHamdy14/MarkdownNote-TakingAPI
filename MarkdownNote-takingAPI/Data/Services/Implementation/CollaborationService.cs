@@ -23,16 +23,14 @@
             await _base.Create(Collaboration);
             return Collaboration;
         }
-        public async Task<Collaboration> Update(int CollaborationId, UpdateCollaborationDTO model)
+        public async Task<Collaboration> Update(Collaboration Collaboration, UpdateCollaborationDTO model)
         {
-            var Collaboration = await _base.Get(n => n.Id == CollaborationId);
             _mapper.Map(Collaboration, model);
             await _base.Update(Collaboration);
             return Collaboration;
         }
-        public async Task Delete(int CollaborationId)
+        public async Task Delete(Collaboration Collaboration)
         {
-            var Collaboration = await _base.Get(n => n.Id == CollaborationId);
             await _base.Remove(Collaboration);
         }
     }

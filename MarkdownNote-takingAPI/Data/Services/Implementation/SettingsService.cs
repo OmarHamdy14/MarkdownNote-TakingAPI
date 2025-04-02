@@ -13,9 +13,8 @@
         {
             return await _base.Get(n => n.UserId == userId);
         }
-        public async Task<Settings> Update(string userId, UpdateSettingsDTO model)
+        public async Task<Settings> Update(Settings Settings, UpdateSettingsDTO model)
         {
-            var Settings = await _base.Get(n => n.UserId == userId);
             _mapper.Map(Settings, model);
             await _base.Update(Settings);
             return Settings;

@@ -3,6 +3,6 @@
     public interface ISettingsService
     {
         Task<Settings> GetByUserId(string userId);
-        Task<Settings> Update(string userId, UpdateSettingsDTO model);
+        Task<Settings> Update(Settings Settings, UpdateSettingsDTO model);
     }
 }

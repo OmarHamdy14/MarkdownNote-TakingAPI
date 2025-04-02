@@ -26,16 +26,14 @@ namespace MarkdownNote_takingAPI.Data.Services.Implementation
             await _base.Create(category);
             return category;
         }
-        public async Task<Category> Update(int categoryId, UpdateCategoryDTO model)
+        public async Task<Category> Update(Category category, UpdateCategoryDTO model)
         {
-            var category = await _base.Get(n => n.Id == categoryId);
             _mapper.Map(category, model);
             await _base.Update(category);
             return category;
         }
-        public async Task Delete(int categoryId)
+        public async Task Delete(Category category)
         {
-            var category = await _base.Get(n => n.Id == categoryId);
             await _base.Remove(category);
         }
     }

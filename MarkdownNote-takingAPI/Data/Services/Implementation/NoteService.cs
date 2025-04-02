@@ -22,9 +22,10 @@
         {
             return await _base.GetAll(n => n.UserId == userId && n.CategoryId == categoryId);
         }
-        public async Task<string> ConvertMarkdown(string markDown)
+        private async Task<string> HandleMarkdown(string markDown)
         {
-            return Markdown.ToHtml(markDown);
+            var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+            return Markdown.ToHtml(markDown,pipeline);
         }
         public async Task<HttpResponseMessage> CheckGrammer(string content)
         {
@@ -41,25 +42,23 @@
         }
         public async Task<Note> Create(CreateNoteDTO model)
         {
-            model.Content = await ConvertMarkdown(model.Content);
+            model.Content = await HandleMarkdown(model.Content);
             var note = _mapper.Map<Note>(model);
             note.CreatedAt = DateTime.UtcNow;
             await _base.Create(note);
             return note;
         } 
-        public async Task<Note> Update(int noteId, UpdateNoteDTO model)
+        public async Task<Note> Update(Note note, UpdateNoteDTO model)
         {
-            model.Content = await ConvertMarkdown(model.Content);
+            model.Content = await HandleMarkdown(model.Content);
 
-            var note = await _base.Get(n => n.Id == noteId);
             _mapper.Map(note, model);
             note.UpdatedAt = DateTime.UtcNow;
             await _base.Update(note);
             return note;
         }
-        public async Task Delete(int noteId)
+        public async Task Delete(Note note)
         {
-            var note = await _base.Get(n => n.Id == noteId);
             await _base.Remove(note);
         }
     }

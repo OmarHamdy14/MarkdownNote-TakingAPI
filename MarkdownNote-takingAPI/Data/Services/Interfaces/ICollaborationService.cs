@@ -5,7 +5,7 @@
         Task<Collaboration> GetById(int CollaborationId);
         Task<List<Collaboration>> GetAllCollaborationsByNoteId(int noteId);
         Task<Collaboration> Create(CreateCollaborationDTO model);
-        Task<Collaboration> Update(int CollaborationId, UpdateCollaborationDTO model);
-        Task Delete(int CollaborationId);
+        Task<Collaboration> Update(Collaboration Collaboration, UpdateCollaborationDTO model);
+        Task Delete(Collaboration Collaboration);
     }
 }
