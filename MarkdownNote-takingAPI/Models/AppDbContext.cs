@@ -17,5 +17,6 @@
         public DbSet<Settings> settings { get; set; }
         public DbSet<Collaboration> collaborations { get; set; }
         public DbSet<VersionHistory> versionHistorys { get; set; }
+        public DbSet<NoteFile> noteFiles { get; set; }
     }
 }

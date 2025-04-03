@@ -14,5 +14,6 @@
         public int CategoryId { get; set; }
         public Category Category { get; set; } // Note can only be in one category (to make it be in more, make a table "Note-Tags" ==> Many-to-Many)
         public bool IsPinned { get; set; }
+        public ICollection<NoteFile> Files { get; set; }
     }
 }

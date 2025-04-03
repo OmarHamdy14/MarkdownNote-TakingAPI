@@ -12,6 +12,7 @@ namespace MarkdownNote_takingAPI
 
 
             builder.Services.AddScoped<IEntityBaseRepository<Note>, EntityBaseRepository<Note>>();
+            builder.Services.AddScoped<IEntityBaseRepository<NoteFile>, EntityBaseRepository<NoteFile>>();
             builder.Services.AddScoped<IEntityBaseRepository<Category>, EntityBaseRepository<Category>>();
             builder.Services.AddScoped<IEntityBaseRepository<Collaboration>, EntityBaseRepository<Collaboration>>();
             builder.Services.AddScoped<IEntityBaseRepository<Settings>, EntityBaseRepository<Settings>>();
@@ -62,6 +63,8 @@ namespace MarkdownNote_takingAPI
                 app.UseSwaggerUI();
             }
 
+            app.UseRouting();
+            app.UseStaticFiles();
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();

@@ -24,7 +24,7 @@ namespace MarkdownNote_takingAPI.Controllers
             if (noteId <= 0) return BadRequest();
             try
             {
-                var note = await _noteService.GetById(noteId);
+                var note = await _noteService.GetById(noteId,"Files");
                 if (note is null) return NotFound();
 
                 return Ok(note);
@@ -44,7 +44,7 @@ namespace MarkdownNote_takingAPI.Controllers
                 var user = await _accountService.FindById(userId);
                 if (user is null) return NotFound();
 
-                var notes = await _noteService.GetAllNotesByUserId(userId);
+                var notes = await _noteService.GetAllNotesByUserId(userId, "Files");
                 //if (!notes.Any()) return NotFound();
 
                 return Ok(notes);
@@ -66,7 +66,7 @@ namespace MarkdownNote_takingAPI.Controllers
                 var category = await _categoryService.GetById(categoryId);
                 if(category is null) return NotFound();
 
-                var notes = await _noteService.GetAllNotesByUserIdAndCategoryId(userId, categoryId);
+                var notes = await _noteService.GetAllNotesByUserIdAndCategoryId(userId, categoryId, "Files");
                 //if (!notes.Any()) return NotFound();
 
                 return Ok(notes);
@@ -91,7 +91,7 @@ namespace MarkdownNote_takingAPI.Controllers
                 return StatusCode(500, new { Message = "Something went wrong." });
             }
         }
-        [Authorize]
+        [Authorize] 
         [HttpPost("Create")]
         public async Task<IActionResult> Create([FromBody]CreateNoteDTO model)
         {
@@ -99,6 +99,26 @@ namespace MarkdownNote_takingAPI.Controllers
             {
                 var note = await _noteService.Create(model);
                 return CreatedAtAction("GetAllNotesByUserIdAndCategoryId", new { userId = note.UserId, categoryId = note.CategoryId }, note);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Something went wrong." });
+            }
+        }
+        [Authorize]
+        [HttpPost("UploadFiles/{noteId}")]
+        public async Task<IActionResult> UploadFiles(int noteId,[FromBody]IFormFile file)
+        {
+            if (noteId <= 0) return BadRequest();
+            try
+            {
+                var note = await _noteService.GetById(noteId);
+                if (note == null) return NotFound();
+
+                if (file == null || file.Length == 0) return BadRequest();
+                var fileUrl = await _noteService.UploadFiles(note, file);
+                if(fileUrl != null) return Ok(new {FileUrl = fileUrl});
+                return BadRequest();
             }
             catch (Exception ex)
             {
@@ -155,6 +175,23 @@ namespace MarkdownNote_takingAPI.Controllers
                 return Ok(new { Message = "Deletion is succeeded." });
             }
             catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Something went wrong." });
+            }
+        }
+        [Authorize]
+        [HttpDelete("DeleteFile/{FileId}")]
+        public async Task<IActionResult> DeleteFile(int FileId)
+        {
+            try
+            {
+                var file = await _noteService.GetFileById(FileId);
+                if(file == null) return NotFound();
+
+                await _noteService.DeleteFile(file);
+                return Ok(new { Message = "Deletion is done." });
+            }
+            catch(Exception ex)
             {
                 return StatusCode(500, new { Message = "Something went wrong." });
             }
